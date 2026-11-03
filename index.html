@@ -1,29 +1,240 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>WHIRLY | Beyond the Frame – 3D Photo Gallery</title>
-	
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="author" content="Abuzar Ansari">
-	<meta name="description" content="Explore WHIRLY, an interactive 3D photo gallery featuring stunning images, smooth transitions, and immersive 3D rotation effects.">
-	<meta name="keywords" content="Abuzar Ansari dev,Abuzar Ansari Projects, Abuzar Ansari dev Project, WHIRLY, 3D Photo Gallery, CSS 3D Transform, CSS Animation, Interactive Gallery, HTML, CSS">
-	<meta name="robots" content="index, follow">
-	<meta name="theme-color" content="#080D1B">
-	<!-- Open Graph Meta Tags -->
-	<meta property="og:title" content="WHIRLY | Beyond the Frame">
-	<meta property="og:description" content="Experience photography in a new dimension with WHIRLY, an interactive 3D photo gallery.">
-	<meta property="og:type" content="website">
-	<meta property="og:image" content="images/preview.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whirly - 3D Photo Gallery</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        } 
+        body {
+            background:
+                radial-gradient(ellipse at 15% 40%, rgba(0, 140, 255, 0.16), transparent 40%),
+                radial-gradient(ellipse at 85% 60%, rgba(110, 50, 255, 0.14), transparent 40%),
+                linear-gradient(135deg, #080d18, #101827, #05070d);
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            height: 80vh;
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-	<!-- Twitter Card Meta Tags -->
-	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:title" content="WHIRLY | Beyond the Frame">
-	<meta name="twitter:description" content="Discover an immersive 3D photo gallery with stunning visual effects.">
-	<meta name="twitter:image" content="images/preview.png">
-	
-	<link rel="stylesheet" href="style.css">
-	<link rel="icon" type="image/png" href="favicon_logo.png">
+        header {
+            width: 100%;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #888888;
+            text-decoration: none;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover,
+        nav .active {
+            color: #ffffff;
+        }
+
+        .main_container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            padding: 20px;
+            gap: 10px;
+			background:green;
+			background: rgba(255, 255, 255, 0.03);
+			border-radius: 20px;			
+        }
+		.gallery-heading {
+			text-align: center;
+			margin-bottom: 40px;
+			padding: 20px;
+		}
+
+		.gallery-heading h1 {
+			font-size: 42px;
+			color: #ffffff;
+			margin-bottom: 12px;
+			letter-spacing: 1px;
+		}
+
+		.gallery-heading h3 {
+			font-size: 16px;
+			color: #8abfff;
+			letter-spacing: 4px;
+			margin-bottom: 15px;
+		}
+
+		.gallery-heading p {
+			font-size: 15px;
+			color: #b8c5d9;
+			line-height: 1.6;
+		}		
+        .grid-3d {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+            width: 50%;
+            height: 400px;
+            background: transparent;
+        }
+		.box1, .box2 {
+			
+            transition-duration: 3s;			
+		}
+		.box1
+		{ 		
+			transition-duration:4s;
+            transform: rotateX(20deg) rotateY(70deg) rotateZ(-3deg);
+            transform-style: preserve-3d;
+            transition-property: transform;
+		}		
+        .main_container:hover .box1 {
+            transform: rotateX(10deg) rotateY(70deg) rotateZ(-5deg);
+            transform-style: preserve-3d;
+            transition-property: transform;
+            transition-duration: 3s;
+        }
+
+        .main_container:hover .box2 {
+            transform: rotateX(10deg) rotateY(-70deg) rotateZ(5deg);
+            transform-style: preserve-3d;
+            transition: transform 3s;
+			transition-timing-function:ease-in-out;
+        }
+
+        .photo_card {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: -15px 20px 35px rgba(0, 0, 0, 0.7);
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+
+        .photo_card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.95);
+            transition: filter 0.3s;
+        }
+
+        .left_card:hover {
+            transform: translateZ(55px) rotateY(-40deg);
+            box-shadow: -25px 35px 50px rgba(0, 140, 255, 0.25);
+        }
+
+        .right_card:hover {
+            transform: translateZ(55px) rotateY(40deg);
+            box-shadow: -25px 35px 50px rgba(110, 50, 255, 0.25);
+        }
+
+        .photo_card:hover img {
+            filter: brightness(1.1);
+        }
+
+        footer {
+            width: 100%;
+            padding: 30px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .category_bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            padding: 6px 20px;
+            border-radius: 20px;
+            gap: 25px;
+        }
+
+        .arrow_btn {
+            background: none;
+            border: none;
+            color: #8290a5;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        .arrow_btn:hover {
+            color: #38bdf8;
+        }
+        .cart_item {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #8290a5;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .cart_item:hover,
+        .cart_item.active {
+            color: #38bdf8;
+        }
+
+        .footer_bottom_info {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #667085;
+            letter-spacing: 1px;
+        }
+
+        .footer_bottom_info a {
+            color: #8290a5;
+            text-decoration: none;
+        }
+
+        .footer_bottom_info a:hover {
+            color: #38bdf8;
+        }
+
+        .right_controls {
+            display: flex;
+            gap: 30px;
+        }
+
+    </style>
 </head>
 <body>
     <header>
@@ -42,125 +253,125 @@
 			<h3>WHIRLY · 3D PHOTO GALLERY</h3>
 			<p>A new perspective on every picture. Move your cursor and experience the magic of depth.</p>
 		</div>	
-    <div class="scene-container">
+    <div class="main_container">
         <div class="grid-3d box1">
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600" alt="Landscape">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=600" alt="Architecture">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600" alt="Nature">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600" alt="Art">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://m.media-amazon.com/images/I/71UHkBhFQeL._AC_UF894,1000_QL80_.jpg" alt="Wildlife">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600" alt="Painting">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600" alt="City">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=600" alt="Nature">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600" alt="London">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=600" alt="Night city">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600" alt="Venice">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600" alt="Aircraft">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=600" alt="Turtle">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=600" alt="Macro leaf">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=600" alt="Cityscape">
             </div>
-            <div class="photo-card card1">
+            <div class="photo_card left_card">
                 <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600" alt="Mountain">
             </div>
         </div>
 
         <div class="grid-3d box2">
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600" alt="Landscape">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=600" alt="Architecture">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600" alt="Nature">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600" alt="Art">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://m.media-amazon.com/images/I/71UHkBhFQeL._AC_UF894,1000_QL80_.jpg" alt="Wildlife">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600" alt="Painting">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600" alt="City">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=600" alt="Nature">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600" alt="London">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=600" alt="Night city">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600" alt="Venice">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600" alt="Aircraft">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=600" alt="Turtle">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=600" alt="Macro leaf">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=600" alt="Cityscape">
             </div>
-            <div class="photo-card card2">
+            <div class="photo_card right_card">
                 <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600" alt="Mountain">
             </div>
         </div>
     </div>
 
     <footer>
-        <div class="category-bar">
-            <button class="arrow-btn">&#9664;</button>
-            <a href="#" class="cat-item active">Cityscapes</a>
-            <a href="#" class="cat-item">Automotive</a>
-            <a href="#" class="cat-item">People</a>
-            <button class="arrow-btn">&#9654;</button>
+        <div class="category_bar">
+            <button class="arrow_btn">&#9664;</button>
+            <a href="#" class="cart_item active">Cityscapes</a>
+            <a href="#" class="cart_item">Automotive</a>
+            <a href="#" class="cart_item">People</a>
+            <button class="arrow_btn">&#9654;</button>
         </div>
 
-        <div class="footer-bottom-info">
+        <div class="footer_bottom_info">
             <div>
-                <a href="https://abuzar-ansari-dev-portfolio.vercel.app" target="_blank">Abuzar Ansari dev</a> &copy; 2026 |
+                Abuzar Ansari dev &copy; 2026 |
                 <a href="#">PRIVACY POLICY</a>
             </div>
-            <div class="right-controls">
+            <div class="right_controls">
                 <span>FULLSCREEN</span>
                 <span>SOUND OFF</span>
             </div>
